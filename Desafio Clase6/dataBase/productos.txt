@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Microscopio",
+    "price": 1250,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-10-512.png",
+    "id": 1
+  },
+  {
+    "title": "Paleta de Pintor",
+    "price": 168,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-06-512.png",
+    "id": 2
+  },
+  {
+    "title": "Lápiz HB",
+    "price": 15,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/to-cool-for-school/512/pencil-512.png",
+    "id": 3
+  },
+  {
+    "title": "Tijera",
+    "price": 40,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/to-cool-for-school/512/closed-scissor-512.png",
+    "id": 4
+  },
+  {
+    "title": "Microscopio",
+    "price": 1250,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-10-512.png",
+    "id": 5
+  },
+  {
+    "title": "Paleta de Pintor",
+    "price": 168,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-06-512.png",
+    "id": 6
+  },
+  {
+    "title": "Lápiz HB",
+    "price": 15,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/to-cool-for-school/512/pencil-512.png",
+    "id": 7
+  },
+  {
+    "title": "Tijera",
+    "price": 40,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/to-cool-for-school/512/closed-scissor-512.png",
+    "id": 8
+  }
+]
