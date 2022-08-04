@@ -1,0 +1,41 @@
+h1 {
+    display: flex;
+    justify-content: center;
+    color: blue;
+    margin: 4rem;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    border: 2px, solid;
+    flex-direction: column;
+    
+}
+
+input {
+    width: 300px;
+    margin: 10px;
+    height: 20px;
+    text-align: center;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.button {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    background-color: rgb(78, 142, 78);
+    color: white;
+    width: 80px;
+    height: 30px;
+    border: none;
+}

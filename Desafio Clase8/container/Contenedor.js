@@ -1,0 +1,117 @@
+const fs = require("fs");
+
+const path = "./products.txt";
+
+class ContenedorArchivo {
+  constructor(path) {
+    this.path = path;
+  }
+
+  async readFile() {
+    if (fs.existsSync(this.path)) {
+      try {
+        const data = await fs.promises.readFile(this.path, "utf-8");
+
+        return JSON.parse(data);
+      } catch (error) {
+        throw new Error("Error al leer archivo");
+      }
+    } else {
+      try {
+        await fs.promises.writeFile(this.path, JSON.stringify([], null, 2));
+        const data = await fs.promises.readFile(this.path, "utf-8");
+        return JSON.parse(data);
+      } catch (error) {
+        throw new Error("Error al escribir el archivo");
+      }
+    }
+  }
+
+  async getAllFile() {
+    try {
+      const data = await this.readFile();
+      return data;
+    } catch (error) {
+      throw new Error("Error al obtener archivo");
+    }
+  }
+
+  async saveInFile(product) {
+    try {
+      const dataArchParse = await this.readFile();
+      if (dataArchParse.length) {
+        await fs.promises.writeFile(
+          this.ruta,
+          JSON.stringify(
+            [
+              ...dataArchParse,
+              { ...obj, id: dataArchParse[dataArchParse.length - 1].id + 1 },
+            ],
+            null,
+            2
+          )
+        );
+      } else {
+        await fs.promises.writeFile(
+          this.ruta,
+          JSON.stringify([{ ...obj, id: 1 }], null, 2)
+        );
+      }
+    } catch (error) {
+      throw new Error("Error al guardar archivo");
+    }
+    return product.id;
+  }
+
+  async deleteAllFile() {
+    try {
+      await fs.promises.writeFile(this.path, JSON.stringify([], null, 2));
+    } catch (error) {
+      throw new Error("Error al borrar archivo");
+    }
+  }
+
+  async getById(id) {
+    // try {
+    console.log("hola en get");
+    this.readFile().then((data) => {
+      console.log(data);
+
+      const foundProduct = data.find((prod) => prod.id === id);
+      if (foundProduct !== undefined) {
+        return foundProduct;
+      } else {
+        return null;
+      }
+    });
+    //   let productsArray = await this.readFile();
+    // const foundProduct = productsArray.find((prod) => prod.id === id);
+    // if (foundProduct !== undefined) {
+    //   return foundProduct;
+    // } else {
+    //   return null;
+    // }
+    // } catch (error) {
+    //   throw new Error("Error al obtener id");
+    // }
+  }
+
+  async deleteById(id) {
+    try {
+      let dataArch = await this.readFile();
+      let product = dataArch.find((prod) => prod.id === id);
+      if (product) {
+        const dataArchFiltrado = dataArch.filter((prod) => prod.id !== id);
+        await this.saveInFile(dataArchFiltrado);
+      } else {
+        throw new Error("Producto no encontrado");
+      }
+    } catch (error) {
+      throw new Error("Error al eliminar id");
+    }
+  }
+}
+
+const fileContainer = new ContenedorArchivo(path);
+
+module.exports = fileContainer;
