@@ -37,24 +37,32 @@ class ContenedorArchivo {
   }
 
   async saveInFile(product) {
+    console.log("guardado");
     try {
       const dataArchParse = await this.readFile();
-      if (dataArchParse.length) {
-        await fs.promises.writeFile(
-          this.ruta,
-          JSON.stringify(
-            [
-              ...dataArchParse,
-              { ...obj, id: dataArchParse[dataArchParse.length - 1].id + 1 },
-            ],
-            null,
-            2
-          )
-        );
+      if (!product.id) {
+        if (dataArchParse.length) {
+          await fs.promises.writeFile(
+            this.path,
+            JSON.stringify(
+              [
+                ...dataArchParse,
+                { ...obj, id: dataArchParse[dataArchParse.length - 1].id + 1 },
+              ],
+              null,
+              2
+            )
+          );
+        } else {
+          await fs.promises.writeFile(
+            this.path,
+            JSON.stringify([{ ...obj, id: 1 }], null, 2)
+          );
+        }
       } else {
         await fs.promises.writeFile(
-          this.ruta,
-          JSON.stringify([{ ...obj, id: 1 }], null, 2)
+          this.path,
+          JSON.stringify([...dataArchParse, product], null, 2)
         );
       }
     } catch (error) {
@@ -72,28 +80,17 @@ class ContenedorArchivo {
   }
 
   async getById(id) {
-    // try {
-    console.log("hola en get");
-    this.readFile().then((data) => {
-      console.log(data);
-
-      const foundProduct = data.find((prod) => prod.id === id);
+    try {
+      let productsArray = await this.readFile();
+      const foundProduct = productsArray.find((prod) => prod.id === id);
       if (foundProduct !== undefined) {
         return foundProduct;
       } else {
         return null;
       }
-    });
-    //   let productsArray = await this.readFile();
-    // const foundProduct = productsArray.find((prod) => prod.id === id);
-    // if (foundProduct !== undefined) {
-    //   return foundProduct;
-    // } else {
-    //   return null;
-    // }
-    // } catch (error) {
-    //   throw new Error("Error al obtener id");
-    // }
+    } catch (error) {
+      throw new Error("Error al obtener id");
+    }
   }
 
   async deleteById(id) {
@@ -102,7 +99,12 @@ class ContenedorArchivo {
       let product = dataArch.find((prod) => prod.id === id);
       if (product) {
         const dataArchFiltrado = dataArch.filter((prod) => prod.id !== id);
-        await this.saveInFile(dataArchFiltrado);
+        // await this.saveInFile(dataArchFiltrado);
+        await fs.promises.writeFile(
+          this.path,
+          JSON.stringify(dataArchFiltrado, null, 2),
+          "utf-8"
+        );
       } else {
         throw new Error("Producto no encontrado");
       }

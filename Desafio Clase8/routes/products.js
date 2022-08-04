@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
       data: products,
     });
   } catch (error) {
-    res.send("ERROR");
+    res.send(error);
   }
 });
 
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
       });
     }
   } catch (error) {
-    res.send("ERROR");
+    res.send(error);
   }
 });
 
@@ -44,35 +44,31 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  // try {
-  console.log("hola");
-  // let productById = await fileContainer.getById(JSON.parse(req.params.id));
-  console.log(await fileContainer.getById(JSON.parse(req.params.id)));
-  console.log(productById);
-  // if (!productById) {
-  //   res.json({
-  //     Error: "Producto no Encontrado",
-  //   });
-  // } else {
-  //   let newValues = req.body;
+  try {
+    let productById = await fileContainer.getById(req.params.id);
+    if (!productById) {
+      res.json({
+        Error: "Producto no Encontrado",
+      });
+    } else {
+      let newValues = req.body;
 
-  //   for (const element in productById) {
-  //     for (const elem in newValues) {
-  //       if (element === elem) {
-  //         productById[element] = newValues[elem];
-  //         console.log(productById);
-  //       }
-  //     }
-  //   }
-  //   await fileContainer.deleteById(req.params.id);
-  //   await fileContainer.saveInFile(productById);
-  //   res.json({
-  //     data: productById,
-  //   });
-  // }
-  // } catch (error) {
-  //   res.send(error);
-  // }
+      for (const element in productById) {
+        for (const elem in newValues) {
+          if (element === elem) {
+            productById[element] = newValues[elem];
+          }
+        }
+      }
+      await fileContainer.deleteById(req.params.id);
+      await fileContainer.saveInFile(productById);
+      res.json({
+        data: productById,
+      });
+    }
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
