@@ -37,38 +37,18 @@ class ContenedorArchivo {
   }
 
   async saveInFile(product) {
-    console.log("guardado");
     try {
-      const dataArchParse = await this.readFile();
-      if (!product.id) {
-        if (dataArchParse.length) {
-          await fs.promises.writeFile(
-            this.path,
-            JSON.stringify(
-              [
-                ...dataArchParse,
-                { ...obj, id: dataArchParse[dataArchParse.length - 1].id + 1 },
-              ],
-              null,
-              2
-            )
-          );
-        } else {
-          await fs.promises.writeFile(
-            this.path,
-            JSON.stringify([{ ...obj, id: 1 }], null, 2)
-          );
-        }
-      } else {
-        await fs.promises.writeFile(
-          this.path,
-          JSON.stringify([...dataArchParse, product], null, 2)
-        );
-      }
+      const data = await this.readFile();
+      const id = data.length == 0 ? 1 : data[data.length - 1].id + 1;
+      console.log(id);
+      const objectToAdd = { ...product, id: id };
+      const newData = [...data, objectToAdd];
+      await fs.promises.writeFile(this.path, JSON.stringify(newData, null, 2));
+      console.log(objectToAdd);
+      return objectToAdd;
     } catch (error) {
       throw new Error("Error al guardar archivo");
     }
-    return product.id;
   }
 
   async deleteAllFile() {

@@ -34,12 +34,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     let addProductId = await fileContainer.saveInFile(req.body);
-    let addProductWithId = await fileContainer.getById(addProductId);
+
     res.json({
-      data: addProductWithId,
+      data: addProductId,
     });
   } catch (error) {
-    res.send("ERROR");
+    res.send(error);
   }
 });
 
