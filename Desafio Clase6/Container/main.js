@@ -1,4 +1,3 @@
-const { getCipherInfo } = require("crypto");
 const ContenedorArchivo = require("./Contenedor.js");
 
 const path = "./dataBase/productos.txt";

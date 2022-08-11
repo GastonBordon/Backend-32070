@@ -1,0 +1,33 @@
+<h2>Vista de productos</h2>
+<%if (products) {%>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                <tr class="table-dark">
+                <th scope="col" class="text-center align-middle">Id</th>
+                <th scope="col" class="text-center align-middle">Nombre</th>
+                <th scope="col" class="text-center align-middle">Precio</th>
+                <th scope="col" class="text-center align-middle">Foto</th>
+            </tr>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(function(prod) { %>
+                <tr>
+                    <th scope="row" class="text-center align-middle"><%= prod.id %></th>
+                    <td class="text-center align-middle"> <%= prod.title %> </td>
+                    <td class="text-center align-middle">$ <%= prod.price %></td>
+                    <td class="text-center align-middle"><img src="<%= prod.thumbnail %>" alt='<%= prod.title %>' class="w-25"></td>
+                </tr>
+                <%})%>
+            </tbody>
+        </table>
+    </div>
+<%}else{%>
+<div class="text-danger">   
+    <h3>No se encontraron productos</h3>
+</div>   
+<%}%>
+
+ <button type="button" class="btn btn-primary" onclick="window.location.href='/'"" >Agregar productos</Button>

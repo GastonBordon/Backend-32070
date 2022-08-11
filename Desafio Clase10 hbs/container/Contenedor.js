@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const path = "./products.txt";
+const path = "products.txt";
 
 class ContenedorArchivo {
   constructor(path) {

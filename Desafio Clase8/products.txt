@@ -3,18 +3,18 @@
     "title": "taza",
     "price": 35222600,
     "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-10-512.png",
-    "id": 3
+    "id": "3"
   },
   {
     "title": "reloj",
     "price": 35222600,
     "thumbnail": "https://cdn4.iconfinder.com/data/icons/education-759/2050/Education_flat-10-512.png",
-    "id": 4
+    "id":"4"
   },
   {
     "title": "cartuchera",
     "price": "2000",
     "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": 5
+    "id": "5"
   }
 ]

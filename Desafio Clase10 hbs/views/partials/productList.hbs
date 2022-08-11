@@ -1,0 +1,35 @@
+{{#if products}}
+<div>
+    <h1>Estos son los productos disponibles</h1>
+<table class="table tablaProductos">
+  <thead>
+    <tr>
+      <tr class="table-dark">
+    <th scope="col" class="text-center align-middle">Id</th>
+    <th scope="col" class="text-center align-middle">Nombre</th>
+    <th scope="col" class="text-center align-middle">Precio</th>
+    <th scope="col" class="text-center align-middle">Foto</th>
+  </tr>
+    </tr>
+  </thead>
+  <tbody>
+      {{#each products}}
+    <tr class="text-center align-middle">
+        <th scope="row" class="text-center align-middle">{{this.id}}</th>
+        <td class="text-center align-middle">{{this.title}}</td>
+        <td class="text-center align-middle">$ {{this.price}}</td>
+        <td class="text-center align-middle"><img src="{{this.thumbnail}}" alt="{{this.title}}" class="w-25"></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+{{else}}
+<div class="text-danger">   
+    <h3>No se encontraron productos</h3>
+</div>   
+{{/if}}
+
+
+  <button type="button" class="btn btn-primary" onclick="window.location.href='/'" >Agregar productos</Button>
+  

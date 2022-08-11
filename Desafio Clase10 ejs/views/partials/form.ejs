@@ -1,0 +1,39 @@
+<h2>Complete los datos del producto a agregar</h2>
+<form action="/api/productos" method="post">
+  <div class="col-md-4">
+    <label for="title" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="title" name="title" required />
+  </div>
+  <div class="col-md-4">
+    <label for="price" class="form-label">Precio</label>
+    <input
+      type="number"
+      class="form-control"
+      id="price"
+      name="price"
+      required
+    />
+  </div>
+  <div class="col-md-4">
+    <label for="img" class="form-label">Foto Url</label>
+    <input type="url" class="form-control" id="img" name="thumbnail" required />
+    <div id="urlHelp" class="form-text">
+      El vinculo debe tener este formato:
+      https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png
+    </div>
+  </div>
+  <br />
+
+  <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+
+<br />
+<form method="get" id="lista">
+  <button
+    type="button"
+    class="btn btn-danger"
+    onclick="window.location.href='/productos'"
+  >
+    Ver Listado
+  </button>
+</form>

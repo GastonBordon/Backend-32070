@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+
+  <body>
+    <div class="contenedor">
+      <% if (listProducts) { %> <%- include('../partials/productList') %> <% }
+      else { %> <%- include('../partials/form' ) %><% } %>
+    </div>
+  </body>
+</html>
