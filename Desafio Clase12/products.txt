@@ -40,53 +40,5 @@
     "price": "670",
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/fruits-52/150/icon_fruit_banana-256.png",
     "id": "7"
-  },
-  {
-    "title": "dgdfgdfg",
-    "price": "666",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": "71"
-  },
-  {
-    "title": "asdasd",
-    "price": "5555",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": "711"
-  },
-  {
-    "title": "assdasd",
-    "price": "7777",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": "7111"
-  },
-  {
-    "title": "uffghfgh",
-    "price": "66666",
-    "thumbnail": "https://www.cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png",
-    "id": "71111"
-  },
-  {
-    "title": "hgjghjghj",
-    "price": "8888",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": "711111"
-  },
-  {
-    "title": "dfgdfgdfg",
-    "price": "7777",
-    "thumbnail": "https://www.cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png",
-    "id": "7111111"
-  },
-  {
-    "title": "xcvxcvxcv",
-    "price": "5555",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_10-256.png",
-    "id": "71111111"
-  },
-  {
-    "title": "asasdasd",
-    "price": "555",
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_8-256.png",
-    "id": "711111111"
   }
 ]

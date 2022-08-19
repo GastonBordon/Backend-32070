@@ -48,6 +48,7 @@ io.on("connection", async (socket) => {
   //Escucha los cambios
   socket.on("product", async (data) => {
     await fileContainer.saveInFile(data);
+    products = await fileContainer.getAllFile();
     io.sockets.emit("productos", products);
   });
 });
@@ -56,8 +57,8 @@ io.on("connection", async (socket) => {
   let mensajes = await msjsContainer.getAllFile();
   socket.emit("chat", mensajes);
   socket.on("nuevoMensaje", async (data) => {
-    console.log(data);
     await msjsContainer.saveInFile(data);
+    mensajes = await msjsContainer.getAllFile();
     io.sockets.emit("chat", mensajes);
   });
 });
