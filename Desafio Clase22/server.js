@@ -44,12 +44,10 @@ app.get("/", (req, res) => {
 });
 
 //* Products Faker *//
-app.get('/api/products-test', (req, res) => {
-  const products = randomData();
-  // console.log(products)
-
+app.get('/api/products-test', (req, res) => {  
   res.render("main", {layouts: "index"});
 });
+
 
 io.on("connection", async (socket) => {
   let products = await fileContainer.getAllFile();
@@ -74,6 +72,15 @@ io.on("connection", async (socket) => {
     mensajes = await msjsContainer.getAllFile();
     io.sockets.emit("chat", mensajes);
   });
+});
+
+io.on('connection', async socket => {
+  console.log('Conexión establecida');
+  const data = randomData();
+  io.sockets.emit('products', data);
+  socket.on('product', async data => {
+      io.sockets.emit('products', data);
+  })
 });
 
 app.use((err, req, res, next) => {

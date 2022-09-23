@@ -1,5 +1,6 @@
 const socket = io.connect();
 
+
 const button = document.getElementById("addProduct");
 
 button.addEventListener("click", (event) => {
@@ -52,10 +53,10 @@ socket.on("chat", (mensajes) => {
 });
 
 
-const tableProducts = document.querySelector('#table-products');
+const tableProducts = document.getElementById('table-products');
 
 const renderProducts = products => {
-    if (products.lenght > 0) {
+    if (products.length > 0) {
 		tableProducts.innerHTML = '';
 		products.forEach(product => {
 			tableProducts.innerHTML += `
@@ -70,4 +71,8 @@ const renderProducts = products => {
 	}
 }
 
-renderProducts(products)
+socket.on('products', products => {
+	renderProducts(products);
+});
+
+
