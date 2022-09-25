@@ -5,13 +5,11 @@ const handlebars = require("express-handlebars");
 const path = require("path");
 const mainRouter = require("./routes/main.js");
 const ContenedorArchivo = require("./container/Contenedor.js");
-const mariaDb = require("./connections/connectionMariaDB/mariaDB.js");
-const sqlite3 = require("./connections/connectionSqlite3/sqlite3.js");
 const randomData = require("./faker.js");
-const { CLIENT_RENEG_LIMIT } = require("tls");
 
-const fileContainer = new ContenedorArchivo("products", mariaDb.options);
-const msjsContainer = new ContenedorArchivo("mensajes", sqlite3.options);
+
+const productsContainer = new ContenedorArchivo("./DB/fs/products.txt");
+const msjsContainer = new ContenedorArchivo("./DB/fs/mensajes.txt");
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -50,15 +48,15 @@ app.get('/api/products-test', (req, res) => {
 
 
 io.on("connection", async (socket) => {
-  let products = await fileContainer.getAllFile();
+  let products = await productsContainer.getAllFile();
   console.log("alguien se conecto");
   //Enviar la info
   socket.emit("productos", products);
 
   //Escucha los cambios
   socket.on("product", async (data) => {
-    await fileContainer.saveInFile(data);
-    products = await fileContainer.getAllFile();
+    await productsContainer.saveInFile(data);
+    products = await productsContainer.getAllFile();
     io.sockets.emit("productos", products);
   });
 });
@@ -75,7 +73,6 @@ io.on("connection", async (socket) => {
 });
 
 io.on('connection', async socket => {
-  console.log('Conexión establecida');
   const data = randomData();
   io.sockets.emit('products', data);
   socket.on('product', async data => {

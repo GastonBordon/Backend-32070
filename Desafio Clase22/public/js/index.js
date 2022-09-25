@@ -30,11 +30,16 @@ const btnEnviar = document.getElementById("btnEnviar");
 
 btnEnviar.addEventListener("click", (event) => {
   event.preventDefault();
-  let email = document.getElementById("email").value;
-  let mensaje = document.getElementById("mensaje").value;
-  if (email && mensaje) {
-    let fecha = new Date();
-    socket.emit("nuevoMensaje", { email, mensaje, fecha });
+  let id = document.getElementById("email").value;
+  let userName = document.getElementById("userName").value;
+  let userSurname = document.getElementById("userSurname").value;
+  let userAge = document.getElementById("userAge").value;
+  let userNickname = document.getElementById("userNickname").value;
+  let avatar = document.getElementById("avatar").value;
+  let text = document.getElementById("text").value;
+
+  if (id && text && userAge && userName && userNickname && avatar && userSurname) {
+    socket.emit("nuevoMensaje", { author: { id, userName, userSurname, userAge, userNickname, avatar }, text});
   }
 });
 
@@ -42,9 +47,8 @@ socket.on("chat", (mensajes) => {
   let chat = "";
   mensajes.forEach((mensaje) => {
     chat += `<li><p>
-    <span class="fw-bold" style="color: blue">${mensaje.email}</span>
-    <span style="color: brown">(${mensaje.fecha})</span>: 
-    <span style="color: green" class="fst-italic">${mensaje.mensaje}</span> 
+    <span class="fw-bold" style="color: blue">${mensaje.author.userNickname}:</span>
+    <span style="color: green" class="fst-italic">${mensaje.text}</span> 
     </p>
     </li>
     `;
