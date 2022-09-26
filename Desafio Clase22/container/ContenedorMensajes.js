@@ -65,14 +65,36 @@ class ContenedorArchivo {
     } else {
       try {
         const data = await this.readFile();
+        const available = this.idAvailable(data);
+        const id = available;
 
-        data.mensajes.push(element);
-        await fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
-        return element;
+        const objectToAdd = { ...element, id: id };
+        data.mensajes.push(objectToAdd);
+        await fs.promises.writeFile(
+          this.path,
+          JSON.stringify(data, null, 2)
+        );
+        return objectToAdd;
       } catch (error) {
         throw new Error("Error al guardar archivo");
       }
     }
+    // if (element.id) {
+    //   const data = await this.readFile();
+    //   const newData = [...data, element];
+    //   newData.sort((a, b) => a.id - b.id);
+    //   await fs.promises.writeFile(this.path, JSON.stringify(newData, null, 2));
+    // } else {
+    //   try {
+    //     const data = await this.readFile();
+
+    //     data.mensajes.push(element);
+    //     await fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
+    //     return element;
+    //   } catch (error) {
+    //     throw new Error("Error al guardar archivo");
+    //   }
+    // }
   }
 
   async deleteAllFile() {
