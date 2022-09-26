@@ -1,26 +1,27 @@
-[
-  {
-    "author": {
-      "id": "gastonbordon@gmail.com",
-      "userName": "Gaston",
-      "userSurname": "Bordon",
-      "userAge": "32",
-      "userNickname": "GasBor",
-      "avatar": "https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png"
+{
+  "id": "mensajes",
+  "mensajes": [
+    {
+      "author": {
+        "id": "gastonbordon@gmail.com",
+        "userName": "Gaston",
+        "userSurname": "bordon",
+        "userAge": "32",
+        "userNickname": "lalala",
+        "avatar": " https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png"
+      },
+      "text": "queeee???"
     },
-    "text": "Hola Soy GAston",
-    "id": 1
-  },
-  {
-    "author": {
-      "id": "gastonbordon@gmail.com",
-      "userName": "Emiliano",
-      "userSurname": "Bordon",
-      "userAge": "32",
-      "userNickname": "EmiBor",
-      "avatar": "https://media.istockphoto.com/vectors/heraldry-griffin-vector-id1339288104?b=1&k=20&m=1339288104&s=170x170&h=0qK66ENWpo0ddnAinx9jFc5yGhpDxhe1tZtyTuX7K2M="
-    },
-    "text": "Hola soy Emiliano",
-    "id": 2
-  }
-]
+    {
+      "author": {
+        "id": "gaston@gmail.com",
+        "userName": "gaston",
+        "userSurname": "brdn",
+        "userAge": "42",
+        "userNickname": "papapapa",
+        "avatar": "https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png"
+      },
+      "text": "qqqqqqqqqqqqq"
+    }
+  ]
+}

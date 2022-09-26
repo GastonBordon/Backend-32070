@@ -1,58 +1,62 @@
 const normalizr = require("normalizr");
 const { normalize, denormalize, schema } = normalizr;
+const { msjsContainer } = require("./container/ContenedorMensajes")
+const util = require('util');
 
-const util = require('util')
 
+const leerChat = async () => {
+    try {
+        let data = await msjsContainer.getAllFile();
+        return data;
+
+    } catch (error) {
+        throw new Error("Error al leer chat")
+    }
+    
+}
+
+const chat = leerChat().then(data => { return data } );
+ 
+    
 const print = (obj) => {
     console.log(util.inspect(obj, false, 12, true))
 }
 
 
-const blogposts = {
-    id: "1",
-    title: "My blogpost",
-    description: "Short blogpost description",
-    content: "Hello world",
-    autor: {
-        id: "1",
-        name: "Jhon Doe"
 
-    },
-    comments: [
-        {
-            id: "1",
-            author: "Rob",
-            content: "Nice post!"
-        },
-        {
-            id: "2",
-            author: "Jane",
-            content: "I totally agree with you!"
-        }
-    ]
-}
+// console.log(chat)
 
-const authorSchema = new schema.Entity("authors")
+const authorSchema = new schema.Entity("authors", {}, {idAttribute: "email"})
 
-const commentsSchema = new schema.Entity("comments")
+const textSchema = new schema.Entity("text", {
+    commenter: authorSchema
+}) 
 
 //esquema para los articulos
 
-const postSchema = new schema.Entity("posts", {
+const mensajesSchema = new schema.Entity("mensajes", {
     author: authorSchema,
-    comments: [ commentsSchema ]
+    mensajes: [ textSchema ]
 })
 
-const normalizedBlogpost = normalize(blogposts, postSchema)
-
-console.log(normalizedBlogpost)
-
-print(normalizedBlogpost)
+const chatSchema = new schema.Entity("chat", {
+    chat: [mensajesSchema]
+})
 
 
-// const denormalizeBlogpost = denormalize(normalizedBlogpost.result, postSchema, normalizedBlogpost.entities)
-// console.log(denormalizeBlogpost)
+
+console.log("------------------ Datos Originales --------------------")
+console.log(JSON.stringify(chat).length)
+
+console.log("------------------ Datos Normalizados ------------------")
+
+const normalizedData = normalize(chat, chatSchema)
+print(normalizedData)
+console.log(JSON.stringify(normalizedData).length)
+
+console.log("------------------ Datos Desnormalizados ------------------")
+const denormalizedData = denormalize(normalizedData.result, chatSchema, normalizedData.entities)
+console.log(denormalizedData)
+// print(JSON.stringify(denormalizedData).length)
 
 
-// console.log(JSON.stringify(blogposts).length)
-// console.log(JSON.stringify(normalizedBlogpost).length)

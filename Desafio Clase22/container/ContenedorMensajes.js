@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-
 class ContenedorArchivo {
   constructor(path) {
     this.path = path;
@@ -22,7 +21,7 @@ class ContenedorArchivo {
   }
 
   async connect() {
-    console.log("File System Products Connected");
+    console.log("File System Msjs Connected");
   }
 
   async readFile() {
@@ -35,7 +34,10 @@ class ContenedorArchivo {
       }
     } else {
       try {
-        await fs.promises.writeFile(this.path, JSON.stringify([], null, 2));
+        await fs.promises.writeFile(
+          this.path,
+          JSON.stringify({ id: "mensajes", mensajes: [] }, null, 2)
+        );
         const data = await fs.promises.readFile(this.path, "utf-8");
         return JSON.parse(data);
       } catch (error) {
@@ -47,7 +49,8 @@ class ContenedorArchivo {
   async getAllFile() {
     try {
       const data = await this.readFile();
-      return data;
+      return data.mensajes;
+      
     } catch (error) {
       throw new Error("Error al obtener archivo");
     }
@@ -62,16 +65,10 @@ class ContenedorArchivo {
     } else {
       try {
         const data = await this.readFile();
-        const available = this.idAvailable(data);
-        const id = available;
 
-        const objectToAdd = { ...element, id: id };
-        const newData = [...data, objectToAdd];
-        await fs.promises.writeFile(
-          this.path,
-          JSON.stringify(newData, null, 2)
-        );
-        return objectToAdd;
+        data.mensajes.push(element);
+        await fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
+        return element;
       } catch (error) {
         throw new Error("Error al guardar archivo");
       }
@@ -150,6 +147,6 @@ class ContenedorArchivo {
   }
 }
 
-const productsContainer = new ContenedorArchivo("./DB/fs/products.txt");
+const msjsContainer = new ContenedorArchivo("./DB/fs/mensajes.txt");
 
-module.exports = productsContainer;
+module.exports = { msjsContainer };

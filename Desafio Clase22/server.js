@@ -4,12 +4,10 @@ const { Server: SocketServer } = require("socket.io");
 const handlebars = require("express-handlebars");
 const path = require("path");
 const mainRouter = require("./routes/main.js");
-const ContenedorArchivo = require("./container/Contenedor.js");
+const productsContainer = require("./container/Contenedor.js");
+const msjsContainer = require("./container/ContenedorMensajes")
+
 const randomData = require("./faker.js");
-
-
-const productsContainer = new ContenedorArchivo("./DB/fs/products.txt");
-const msjsContainer = new ContenedorArchivo("./DB/fs/mensajes.txt");
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -88,3 +86,5 @@ app.use((err, req, res, next) => {
 httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+
