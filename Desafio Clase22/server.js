@@ -4,8 +4,10 @@ const { Server: SocketServer } = require("socket.io");
 const handlebars = require("express-handlebars");
 const path = require("path");
 const mainRouter = require("./routes/main.js");
-const productsContainer = require("./container/Contenedor.js");
-const msjsContainer = require("./container/ContenedorMensajes")
+const { productsContainer } = require("./container/Contenedor.js");
+const { msjsContainer } = require("./container/ContenedorMensajes")
+
+const normalizedData = require("./normalizr.js")
 
 const randomData = require("./faker.js");
 
@@ -60,8 +62,10 @@ io.on("connection", async (socket) => {
 });
 
 io.on("connection", async (socket) => {
-  let mensajes = await msjsContainer.getAllFile();
-  socket.emit("chat", mensajes);
+  let mensajes = await msjsContainer.readFile();
+  let data = await normalizedData(mensajes)
+
+  socket.emit("chat", data);
 
   socket.on("nuevoMensaje", async (data) => {
     await msjsContainer.saveInFile(data);

@@ -152,4 +152,4 @@ class ContenedorArchivo {
 
 const productsContainer = new ContenedorArchivo("./DB/fs/products.txt");
 
-module.exports = productsContainer;
+module.exports = { productsContainer };

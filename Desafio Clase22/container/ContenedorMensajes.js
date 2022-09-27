@@ -65,7 +65,7 @@ class ContenedorArchivo {
     } else {
       try {
         const data = await this.readFile();
-        const available = this.idAvailable(data);
+        const available = this.idAvailable(data.mensajes);
         const id = available;
 
         const objectToAdd = { ...element, id: id };
@@ -79,22 +79,6 @@ class ContenedorArchivo {
         throw new Error("Error al guardar archivo");
       }
     }
-    // if (element.id) {
-    //   const data = await this.readFile();
-    //   const newData = [...data, element];
-    //   newData.sort((a, b) => a.id - b.id);
-    //   await fs.promises.writeFile(this.path, JSON.stringify(newData, null, 2));
-    // } else {
-    //   try {
-    //     const data = await this.readFile();
-
-    //     data.mensajes.push(element);
-    //     await fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
-    //     return element;
-    //   } catch (error) {
-    //     throw new Error("Error al guardar archivo");
-    //   }
-    // }
   }
 
   async deleteAllFile() {

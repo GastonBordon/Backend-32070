@@ -1,28 +1,11 @@
 const normalizr = require("normalizr");
 const { normalize, denormalize, schema } = normalizr;
 const { msjsContainer } = require("./container/ContenedorMensajes")
-const util = require('util');
 
-
-const print = (obj) => {
-    console.log(util.inspect(obj, false, 12, true))
-}
-
-const authorSchema = new schema.Entity("authors")
-
-const textSchema = new schema.Entity("text") 
-
-const mensajesSchema = new schema.Entity("mensajes", {
-    author: authorSchema
-})
-
-const chatSchema = new schema.Entity("chat", {
-    chat: [mensajesSchema]
-})
 
 const readChat = async() => {
     try {
-        let data = await msjsContainer.getAllFile();
+        let data = await msjsContainer.readFile();
         return data
 
     } catch (error) {
@@ -30,26 +13,26 @@ const readChat = async() => {
     }
 }
 
-readChat().then((data) => {
-const normalizedData = normalize(data, mensajesSchema)
-console.log(normalizedData)
-// print(normalizedData)
-}).catch((error) => {console.log(error)})
+const authorSchema = new schema.Entity("authors", {}, {idAttribute: "email"})
+
+const mensajeSchema = new schema.Entity("mensaje", {
+    author: authorSchema
+})
+
+const chatSchema = new schema.Entity("chat", {
+    mensajes: [ mensajeSchema ]
+})
 
 
+const normalizedData = async() => {
+    try {
+        const data = await readChat()
+        const normalizedData = normalize(data, chatSchema)
+        return normalizedData
+        }
+         catch (error) {
+        throw new Error("Error al leer chat")
+    }
+}
 
-// console.log("------------------ Datos Originales --------------------")
-// console.log(JSON.stringify(chat).length)
-
-// console.log("------------------ Datos Normalizados ------------------")
-
-// const normalizedData = normalize(chat, chatSchema)
-// print(normalizedData)
-// console.log(JSON.stringify(normalizedData).length)
-
-// console.log("------------------ Datos Desnormalizados ------------------")
-// const denormalizedData = denormalize(normalizedData.result, chatSchema, normalizedData.entities)
-// console.log(denormalizedData)
-// print(JSON.stringify(denormalizedData).length)
-
-
+module.exports = normalizedData
