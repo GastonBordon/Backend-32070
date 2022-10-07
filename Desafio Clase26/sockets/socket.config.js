@@ -2,10 +2,13 @@ const { Server: HttpServer } = require("http");
 const app = require("../app");
 const httpServer = new HttpServer(app);
 const { Server: SocketServer } = require("socket.io");
-const io = new SocketServer(httpServer);
 const productsContainer = require("../container/Contenedor.js");
 const msjsContainer = require("../container/ContenedorMensajes.js");
 const normalize = require("../normalizr/normalizr.js");
+
+const initSocket =()=>{
+
+const io = new SocketServer(httpServer);
 
   io.on("connection", async (socket) => {
     let products = await productsContainer.getAllFile();
@@ -35,4 +38,6 @@ const normalize = require("../normalizr/normalizr.js");
       io.sockets.emit("chat", mensajes);
     });
   });
+}
 
+module.exports = {initSocket, httpServer}

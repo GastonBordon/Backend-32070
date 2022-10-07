@@ -1,8 +1,9 @@
-const express = require("express");
+const express = require("express")
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 require("dotenv").config();
+
 const passport = require("./middlewares/passport/passport.middleware");
 
 const mainRouter = require("./routes/index.routes");
@@ -10,7 +11,6 @@ const MongoStore = require("connect-mongo");
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const app = express();
-
 //* Handlebars */
 
 const handlebars = require("express-handlebars");
@@ -29,12 +29,6 @@ app.engine(
     defaultLayout: defaultLayoutPath,
   })
 );
-
-
-app.get("/", (req, res) => {
-  res.render("main", { layouts: "index"});
-});
-
 
 app.use(logger("dev"));
 
@@ -61,7 +55,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      maxAge: 15000,
     },
   })
 );
@@ -72,7 +66,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", mainRouter);
-
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

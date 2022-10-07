@@ -1,71 +1,116 @@
 const passport = require("passport");
 const Users = require("../../users");
 const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
+const { createHash, isValidePassword } = require("../../utils/utils");
 
-//  FUNCION PARA VALIDAR PASSWORD
+//** Mongo usuarios */
+const { connectDB } = require("../../DB/mongoDB/connection");
+const mongoose = require('mongoose');
 
-const isValidePassword = (user, password) => {
-  return bcrypt.compareSync(password, user.password);
-};
+connectDB()
 
-// MIDDLEWARES PARA VER SI EXISTE USUARIO
+const schema = {
+  username: {
+    type: String,
+    required: true,
+    trim: true,
+    max: 50
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    trim: true,
+    required: true
+  }
+}
+
+let modelSchema = new mongoose.Schema(schema,
+  { timestamps: true }
+)
+
+usersCollection = mongoose.model("users", modelSchema)
+
+
 passport.use(
   "login",
-  new LocalStrategy((username, password, done) => {
-    let user = Users.find((user) => user.username === username);
+  new LocalStrategy(  { passReqToCallback: true },(req, username, password, done) => {
+    // let user = Users.find((user) => user.username === username);
+    usersCollection.find({username: username}, async function (err, [user]) {
+        if (err) {
+          done(err)
+        } else {
+        if (!user) {
+          console.log(`No existe el usuario ${username}`);
+          return done(null, false, { message: "User not found" });
+          }
 
-    if (!user) {
-      console.log(`No existe el usuario ${username}`);
-      return done(null, false, { message: "User not found" });
-    }
+          if (!isValidePassword(user, password)) {
+            console.log("Password Incorrecto");
+            return done(null, false, { message: "Password Incorrecto" });
+          }
 
-    if (!isValidePassword(user, password)) {
-      console.log("Password Incorrecto");
-      return done(null, false, { message: "Password Incorrecto" });
-    }
-
-    done(null, user);
-  })
+        return done(null, user);
+                }})        })
 );
 
 passport.use(
-  "singup",
+  "signup",
   new LocalStrategy(
     { passReqToCallback: true },
     (req, username, password, done) => {
-      let user = Users.find((user) => user.username === username);
-      const { name, email } = req.body;
 
-      if (user) {
-        console.log(`El usuario ${username} ya existe`);
-        return done(null, false, { message: "User already exists" });
-      }
+      usersCollection.exists({ username: username }, async function (err, result) {
+        if (err) {
+          console.log(err);
+          done(err)
+        } else {
+          if (result) {
+            console.log(`El usuario ${username} ya existe`);
+            return done(null, false, { message: "User already exists" });
+          } else {
+            const { email } = req.body
+            let newUser = {
+              username,
+              email,
+              password: createHash(password)
+            };
+            const userMongo = await usersCollection.create(newUser)
 
-      let newUser = {
-        id: Users.length + 1,
-        username,
-        // password: createHash(password),
-        password,
-        name,
-        email,
-      };
-
-      Users.push(newUser);
-
-      return done(null, newUser.id);
+            return done(null, userMongo)
+          }
+        }
+      });
     }
   )
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user._id);
 });
+
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser((id, done) => {
+//   let user = Users.find((user) => user.id === id);
+
+//   done(null, user);
+// });
 
 passport.deserializeUser((id, done) => {
-  let user = User.find((user) => user.id === id);
-
-  done(null, user);
+  usersCollection.findById(id, function (err, docs) {
+    if (err){
+        console.log(err);
+    }
+    else{
+        done(null, docs);
+    }
+})
 });
+
 
 module.exports = passport;

@@ -6,7 +6,7 @@ const routerProducts = require("../products/products.routes");
 
 const router = Router();
 
-router.use("/", routerProducts);
+router.use("/productos", routerProducts);
 router.use("/products-test", routerFaker);
 
 module.exports = router;
