@@ -7,7 +7,7 @@ function buildWarnLogger() {
 }
 
 function buildErrorLogger() {
-  const errorLogger = pino("./logs/error.log");
+  const errorLogger = pino("../logs/error.log");
   errorLogger.level = "error";
   return errorLogger;
 }

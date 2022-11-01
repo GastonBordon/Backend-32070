@@ -1,5 +1,9 @@
 const fs = require("fs");
-
+const {
+  buildErrorLogger,
+  logger,
+} = require("../middlewares/logger/logger.pino");
+const errorLogger = buildErrorLogger();
 
 class ContenedorArchivo {
   constructor(path) {
@@ -31,6 +35,8 @@ class ContenedorArchivo {
         const data = await fs.promises.readFile(this.path, "utf-8");
         return JSON.parse(data);
       } catch (error) {
+        logger.error("Error al leer archivo");
+        errorLogger.error("Error al leer archivo");
         throw new Error("Error al leer archivo");
       }
     } else {
@@ -39,6 +45,8 @@ class ContenedorArchivo {
         const data = await fs.promises.readFile(this.path, "utf-8");
         return JSON.parse(data);
       } catch (error) {
+        logger.error("Error al escribir archivo");
+        errorLogger.error("Error al escribir archivo");
         throw new Error("Error al escribir el archivo");
       }
     }
@@ -49,6 +57,8 @@ class ContenedorArchivo {
       const data = await this.readFile();
       return data;
     } catch (error) {
+      logger.error("Error al obtener archivo");
+      errorLogger.error("Error al obtener archivo");
       throw new Error("Error al obtener archivo");
     }
   }
@@ -73,6 +83,8 @@ class ContenedorArchivo {
         );
         return objectToAdd;
       } catch (error) {
+        logger.error("Error al guardar archivo");
+        errorLogger.error("Error al guardar archivo");
         throw new Error("Error al guardar archivo");
       }
     }
@@ -82,6 +94,8 @@ class ContenedorArchivo {
     try {
       await fs.promises.writeFile(this.path, JSON.stringify([], null, 2));
     } catch (error) {
+      logger.error("Error al borrar archivo");
+      errorLogger.error("Error al borrar archivo");
       throw new Error("Error al borrar archivo");
     }
   }
@@ -96,6 +110,8 @@ class ContenedorArchivo {
         return null;
       }
     } catch (error) {
+      logger.error("Error al obtener ID");
+      errorLogger.error("Error al obtener ID");
       throw new Error("Error al obtener id");
     }
   }
@@ -104,6 +120,9 @@ class ContenedorArchivo {
     try {
       let foundProduct = await this.getById(id);
       if (!foundProduct) {
+        logger.error("Error! producto no encontrado");
+        errorLogger.error("Error! producto no encontrado");
+
         res.status(404).json({
           error: "NOT FOUND 404!!! producto no encontrado",
         });
@@ -121,10 +140,14 @@ class ContenedorArchivo {
             "utf-8"
           );
         } else {
+          logger.error("Elemento no encontrado");
+          errorLogger.error("Elemento no encontrado");
           throw new Error("Elemento no encontrado");
         }
       }
     } catch (error) {
+      logger.error("Error al eliminar ID");
+      errorLogger.error("Error al eliminar ID");
       throw new Error("Error al eliminar id");
     }
   }
@@ -132,6 +155,8 @@ class ContenedorArchivo {
   async updateById(id, newValues) {
     let foundProduct = await this.getById(id);
     if (!foundProduct) {
+      logger.error("Error producto no encontrado");
+      errorLogger.error("Error producto no encontrado");
       res.status(404).json({
         error: "NOT FOUND 404!! producto no encontrado!!",
       });
