@@ -1,32 +1,30 @@
-const express = require("express");
+const express = require("express")
 const cookieParser = require("cookie-parser");
-const loggerMorgan = require("morgan");
+const logger = require("morgan");
 const session = require("express-session");
-const {
-  buildWarnLogger,
-  buildErrorLogger,
-  logger,
-} = require("./middlewares/logger/logger.pino.js");
 require("dotenv").config();
+// const logger = require('pino')()
+// logger.level = 'info'
+var theHTTPLog = logger({
+  "format": "dev",
+});
 
-const passport = require("./middlewares/passport/passport.middleware");
+const passport = require("./src/middlewares/passport/passport.middleware");
 
-const mainRouter = require("./routes/index.routes");
+const mainRouter = require("./src/routes/index.routes");
 const MongoStore = require("connect-mongo");
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const app = express();
+app.use(theHTTPLog)
 //* Handlebars */
 
 const handlebars = require("express-handlebars");
 const path = require("path");
-const layoutsFolderPath = path.resolve(__dirname, "./views/layouts");
-const defaultLayoutPath = path.resolve(__dirname, "./views/layouts/index.hbs");
+const layoutsFolderPath = path.resolve(__dirname, "./src/views/layouts");
+const defaultLayoutPath = path.resolve(__dirname, "./src/views/layouts/index.hbs");
 
-const warnLogger = buildWarnLogger();
-const errorLogger = buildErrorLogger();
-
-app.set("views", "./views");
+app.set("views", "./src/views");
 app.set("view engine", "hbs");
 
 app.engine(
@@ -38,15 +36,15 @@ app.engine(
   })
 );
 
-app.use(loggerMorgan("dev"));
+// app.use(logger("dev"));
 
-app.use(cookieParser(process.env.COOKIES_SECRET || "123456"));
+app.use(cookieParser(process.env.COOKIES_SECRET || '123456'));
 
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
+app.use(express.static("src/public"));
 
 //*    INICIALIZO SESION CON MONGO ATLAS    *//
 
@@ -76,14 +74,9 @@ app.use(passport.session());
 app.use("/", mainRouter);
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.send(err);
-});
-
-app.all("*", (req, res) => {
-  const { url, method } = req;
-  logger.warn("Ruta %s no implementada. Metodo: %s", url, method);
-  warnLogger.warn("Ruta %s no implementada. Metodo: %s", url, method);
-});
+    console.error(err.stack);
+    res.send(err);
+  });
+  
 
 module.exports = app;

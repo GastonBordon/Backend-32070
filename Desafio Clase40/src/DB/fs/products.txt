@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Tijera",
+    "price": "12312",
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Sclssors.png",
+    "id": 1
+  },
+  {
+    "title": "asd",
+    "price": "123",
+    "thumbnail": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_16_copy-256.png",
+    "id": 2
+  }
+]
