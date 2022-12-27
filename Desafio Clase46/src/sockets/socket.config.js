@@ -1,6 +1,7 @@
 const { Server: HttpServer } = require("http");
 const app = require("../../app");
-const httpServer = new HttpServer(app);
+const httpServer = new HttpServer(app.callback());
+// const httpServer = new HttpServer(app);
 const { Server: SocketServer } = require("socket.io");
 const normalize = require("../normalizr/normalizr.js");
 const productsApi = require("../api/products.api.js");

@@ -17,7 +17,5 @@ router.get("/", (ctx) => {
 
 router.use(routerProducts.routes());
 router.use(routerFaker.routes());
-// router.use("/productos", routerProducts);
-// router.use("/products-test", routerFaker);
 
 module.exports = router;

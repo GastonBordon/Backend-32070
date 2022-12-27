@@ -1,55 +1,69 @@
 const productsApi = require("../api/products.api.js");
 
 const productsController = {
-renderAllProducts : async (req, res) => {
-    try {
-      let products = await productsApi.getAllFile();
-      res.render("main", { layouts: "index", products, session: req.session })
-    } catch (error) {
-      res.send(error);
-    }
-},
-getAllProducts : async (req, res) => {
+
+getAllProducts : async (ctx) => {
   try {
     let products = await productsApi.getAllFile();
-    res.status(201).json(products)
+    ctx.response.status = 200
+    ctx.body = {
+      status: "Success",
+      products
+    }
   } catch (error) {
-    res.send(error);
+    ctx.response.status = 400
+    ctx.body = {
+      status: "Error",
+      error
+    }
   }
 },
-getProductById : async (req, res) => {
+getProductById : async (ctx) => {
     try {
-      let productById = await productsApi.getById(req.params.id);
+      let productById = await productsApi.getById(ctx.params.id);
       if (!productById) {
-        res.json({
+       ctx.body = {
           Error: "Producto no Encontrado",
-        });
+        };
       } else {
-        res.status(201).json({
+        ctx.response.status = 201
+        ctx.body = {
+          status: "Success",
           data: productById,
-        });
+        }
+      }
+    }catch (error) {
+      ctx.response.status = 400
+      ctx.body = {
+        status: "Error",
+        error
+      }
+    }
+  },
+  saveProduct : async (ctx) => {
+    try {
+      const product = await productsApi.saveInFile(ctx.request.body);
+      ctx.body = {
+        status: 201,
+        data: product,
       }
     } catch (error) {
-      res.send(error);
+      ctx.response.status = 400
+      ctx.body = {
+        status: "Error",
+        error
+      }
     }
   },
-  saveProduct : async (req, res) => {
+updateProductById : async (ctx) => {
     try {
-      const product = await productsApi.saveInFile(req.body);
-      res.status(201).json({ data: product })
-    } catch (error) {
-      res.send(error);
-    }
-  },
-updateProductById : async (req, res) => {
-    try {
-      let productById = await productsApi.getById(req.params.id);
+      let productById = await productsApi.getById(ctx.params.id);
       if (!productById) {
-        res.json({
-          Error: "Producto no Encontrado",
-        });
+        ctx.body = {
+           Error: "Producto no Encontrado",
+         };
       } else {
-        let newValues = req.body;
+        let newValues = ctx.request.body;
   
         for (const element in productById) {
           for (const elem in newValues) {
@@ -58,24 +72,37 @@ updateProductById : async (req, res) => {
             }
           }
         }
-        await productsApi.deleteById(req.params.id);
+        await productsApi.deleteById(ctx.params.id);
         await productsApi.saveInFile(productById);
-        res.json({
-          data: productById,
-        });
+
+        ctx.body = {
+          status: "Success",
+          data: productById
+        }
+        
       }
     } catch (error) {
-      res.send(error);
+      ctx.response.status = 400
+      ctx.body = {
+        status: "Error",
+        error
+      }
     }
   },
-deleteById : async (req, res) => {
+deleteById : async (ctx) => {
     try {
-      await productsApi.deleteById(req.params.id);
-      res.json({
+      await productsApi.deleteById(ctx.params.id);
+      ctx.body = {
+        status: "Success",
         data: "archivo eliminado con éxito",
-      });
+      }
+     
     } catch (error) {
-      res.send("ERROR");
+      ctx.response.status = 400
+      ctx.body = {
+        status: "Error",
+        error
+      }
     }
   }
 }

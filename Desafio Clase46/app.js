@@ -7,10 +7,6 @@ const app = new Koa();
 app.use(koaBody());
 app.use(mainRouter.routes());
 
-const PORT = 4000;
-const server = app.listen(PORT, () => {
-  console.log(`Server listening on port ${server.address().port}`);
-});
 
 // Copia del otro desafio
 
