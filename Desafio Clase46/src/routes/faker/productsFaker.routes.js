@@ -8,7 +8,7 @@ const router = new Router({
 router.get("/", (ctx) => {
   const data = randomData();
   ctx.body = {
-    status: "todo ok",
+    status: "Success",
     data,
   };
 });
