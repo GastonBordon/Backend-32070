@@ -21,7 +21,6 @@ class productsApiContainer {
     }
 
     async getAllFile() {
-
         try {
             const data = await this.productsDao.readFile();
             return data;
@@ -35,13 +34,13 @@ class productsApiContainer {
             const data = await this.productsDao.readFile();
             const newData = [...data, element];
             newData.sort((a, b) => a.id - b.id);
-            await productsDao.writeFile(newData);
+            await this.productsDao.writeFile(newData);
+            return element;
         } else {
             try {
                 const data = await this.productsDao.readFile();
                 const available = this.idAvailable(data);
                 const id = available;
-
                 const objectToAdd = {
                     ...element,
                     id: id,
@@ -65,7 +64,6 @@ class productsApiContainer {
 
     async getById(id) {
         try {
-            console.log(id)
             let elementsArray = await this.productsDao.readFile();
             const foundElement = elementsArray.find((elem) => elem.id === Number(id));
             if (foundElement !== undefined) {
@@ -119,6 +117,7 @@ class productsApiContainer {
             foundProduct.timestamp = Date.now();
             await this.deleteById(id);
             await this.saveInFile(foundProduct);
+            return foundProduct
         }
     }
 }

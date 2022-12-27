@@ -1,5 +1,6 @@
 const config = require("../../config.js")
 const productsFactoryDAO = require("../model/DaoProducts/productsFactory.js")
+console.log(productsFactoryDAO)
 
 class productsApiContainer {
     constructor() {
