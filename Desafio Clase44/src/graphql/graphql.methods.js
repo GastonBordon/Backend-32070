@@ -3,9 +3,10 @@ const productsFactoryDAO = require("../model/DaoProducts/productsFactory.js")
 console.log(productsFactoryDAO)
 
 class productsApiContainer {
-    constructor() {
-        this.productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
-    }
+
+    // constructor() {
+    //     this.productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
+    // }
     
     idAvailable(array) {
         const sortedArray = array.slice().sort(function (a, b) {
@@ -23,8 +24,8 @@ class productsApiContainer {
 
     async getAllFile() {
         try {
-            console.log(this.productsDao)
-            const data = await this.productsDao.readFile();
+            const productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
+            const data = await productsDao.readFile();
             return data;
         } catch (error) {
             throw new Error("Error al obtener archivo");
@@ -32,15 +33,15 @@ class productsApiContainer {
     }
 
     async saveInFile({element}) {
+        const productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
         if (element.id) {
-            const data = await this.productsDao.readFile();
+            const data = await productsDao.readFile();
             const newData = [...data, element];
             newData.sort((a, b) => a.id - b.id);
             await productsDao.writeFile(newData);
         } else {
-            console.log(element)
             try {
-                const data = await this.productsDao.readFile();
+                const data = await productsDao.readFile();
                 const available = this.idAvailable(data);
                 const id = available;
 
@@ -49,7 +50,7 @@ class productsApiContainer {
                     id: id,
                 };
                 const newData = [...data, objectToAdd];
-                await this.productsDao.writeFile(newData);
+                await productsDao.writeFile(newData);
                 return objectToAdd;
             } catch (error) {
                 throw new Error("Error al guardar archivo");
@@ -59,7 +60,8 @@ class productsApiContainer {
 
     async deleteAllFile() {
         try {
-            await this.productsDao.writeFile([]);
+            const productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
+            await productsDao.writeFile([]);
         } catch (error) {
             throw new Error("Error al borrar archivo");
         }
@@ -67,8 +69,8 @@ class productsApiContainer {
 
     async getById({id}) {
         try {
-            console.log(id)
-            let elementsArray = await this.productsDao.readFile();
+            const productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
+            let elementsArray = await productsDao.readFile();
             const foundElement = elementsArray.find((elem) => elem.id === Number(id));
             if (foundElement !== undefined) {
                 return foundElement;
@@ -88,13 +90,14 @@ class productsApiContainer {
                     error: "NOT FOUND 404!!! producto no encontrado",
                 });
             } else {
-                let dataArch = await this.productsDao.readFile();
+                const productsDao = productsFactoryDAO.get(config.METODO_PERSISTENCIA)
+                let dataArch = await productsDao.readFile();
                 let element = dataArch.find((elem) => elem.id === Number(id));
                 if (element) {
                     const dataArchFiltrado = dataArch.filter(
                         (elem) => elem.id !== Number(id)
                     );
-                    await this.productsDao.writeFile(dataArchFiltrado);
+                    await productsDao.writeFile(dataArchFiltrado);
                     return foundProduct
                 } else {
                     throw new Error("Elemento no encontrado");
